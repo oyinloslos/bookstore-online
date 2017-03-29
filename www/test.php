@@ -57,6 +57,7 @@ if(array_key_exists('save', $_POST)) {
 	$destination = 'uploads/'.$filename;
 
 	if(!move_uploaded_file($_FILES['pic']['tmp_name'], $destination)) {
+		
 		$errors[]  = "file upload failed";
 	}
 
