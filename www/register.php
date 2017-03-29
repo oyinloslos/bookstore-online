@@ -1,6 +1,64 @@
 <?php
+   #title
+
+   $page_title = "Register";
+
    #include header
    include 'includes/header.php';
+
+   if(array_key_exists('register', $_POST)) {
+   	#cache errors
+   	$errors = [];
+
+   	
+   	#validate first name 
+   	if(empty($_POST['fname'])){
+   		$errors[] = "*please enter a first name </br>";
+   	}
+
+   	
+   	if(empty($_POST['lname'])) {
+   		$errors[] = "*please enter a last name </br>";
+
+   	}
+
+   	if(empty($_POST['email'])){
+   		$errors[] = "*please enter a email address </br>" ; 
+   	}
+
+   	if(empty($_POST['password'])){
+   		$errors[] = "*Please enter a password </br>";
+
+   	}
+
+
+   	//if ($_POST['pword'] != $_POST['password']){ 
+
+   		//$errors[] = "please confirm password";
+   	//}
+
+   	if (empty($_POST['pword'])){
+        $errors[] = "Please confirm password";
+    }
+
+    if ($_POST['pword'] != $_POST['password'])
+    {
+        $errors[] = "Passwords do not match.";
+    }
+
+   	
+   	if(empty($errors)) {
+   		//do database stuff
+
+   	}else{
+   		foreach ($errors as $err) {
+   			echo $err;
+   		}
+   	}
+
+
+   }
+   
 
 ?>
 	<div class="wrapper">
@@ -35,3 +93,11 @@
 
 		<h4 class="jumpto">Have an account? <a href="login.php">login</a></h4>
 	</div>
+
+<?php
+   #include footer
+ 
+   include 'includes/footer.php';
+
+?>
+	
