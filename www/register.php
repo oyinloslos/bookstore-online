@@ -6,8 +6,16 @@
    #load db connection
    include 'includes/db.php';
 
+
+   #including functions
+   include 'includes/functions.php';
+
    #include header
    include 'includes/header.php';
+
+
+
+   #form validation
 
    if(array_key_exists('register', $_POST)) {
    	#cache errors
@@ -27,6 +35,9 @@
 
    	if(empty($_POST['email'])){
    		$errors['email'] = "*please enter a email address </br>" ; 
+   	}
+   	if(usersEmailExistence($conn, $_POST['email'])) {
+   		$errors['email'] = "*email already exists";
    	}
 
    	if(empty($_POST['password'])){
@@ -55,25 +66,8 @@
   	#eliminate unwanted spaces from values in the $_POST array
   	$clean = array_map('trim', $_POST);
 
-  	#hash the password
-  	$hash = password_hash($clean['password'], PASSWORD_BCRYPT);
-
-
-  	#insert data
-  	$stmt = $conn->prepare("INSERT INTO admin(firstName, lastName, email, hash) VALUES(:fn, :ln, :e, :h)");
-
-
-
-  	#bind params
-  	$data = [
-  		':fn' => $clean['fname'],
-  		':ln' => $clean['lname'],
-  		':e'  => $clean['email'],
-  		':h'  => $hash
-  	];
-
-  		$stmt->execute($data);
-
+  	#register admin
+  	dbAdminRegister($conn,$clean);
    	
    		
    	}
