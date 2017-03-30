@@ -3,6 +3,9 @@
 
    $page_title = "Register";
 
+   #load db connection
+   include 'includes/db.php';
+
    #include header
    include 'includes/header.php';
 
@@ -46,12 +49,20 @@
         $errors['pword'] = "Passwords do not match.";
     }
 
-   	
-   	
 
-   }
-   
+  if(empty($errors)) {
+   		//do database stuff
+  	#eliminate unwanted spaces from values in the $_POST array
+  	$clean = array_map('trim', $_POST);
 
+   	}else{
+   		foreach ($errors as $err) {
+   			echo $err;
+   		}
+   	}
+
+
+   } 	
 ?>
 	<div class="wrapper">
 		<h1 id="register-label">Admin Register</h1>
