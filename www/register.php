@@ -47,15 +47,7 @@
     }
 
    	
-   	if(empty($errors)) {
-   		//do database stuff
-
-   	}else{
-   		foreach ($errors as $err) {
-   			echo $err;
-   		}
-   	}
-
+   	
 
    }
    
