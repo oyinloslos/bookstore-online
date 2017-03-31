@@ -14,13 +14,13 @@
    include 'includes/header.php';
 
 
+   #cache errors
+   $errors = [];
 
    #form validation
 
    if(array_key_exists('register', $_POST)) {
-   	#cache errors
-   	$errors = [];
-
+   	
    	
    	#validate first name 
    	if(empty($_POST['fname'])){
@@ -37,6 +37,7 @@
    		$errors['email'] = "*please enter a email address </br>" ; 
    	}
    	if(usersEmailExistence($conn, $_POST['email'])) {
+
    		$errors['email'] = "*email already exists";
    	}
 
@@ -81,7 +82,10 @@
 		<form id="register"  action ="register.php" method ="POST">
 			<div>
 				<?php
-					if(isset($errors['fname'])) { echo '<span class="err">'.$errors['fname']. '</span>';}
+					//if(isset($errors['fname'])) { displayErrors($errors['fname']);}
+                     
+                     echo displayErrors($errors, 'fname');
+
 
 				?>
 				<label>first name:</label>
@@ -89,7 +93,7 @@
 			</div>
 			<div>
 				<?php
-					if(isset($errors['lname'])) { echo '<span class="err">'. $errors['lname']. '</span>';}
+				echo displayErrors($errors, 'lname');
 
 				?>
 				<label>last name:</label>	
@@ -98,7 +102,7 @@
 			    
 			<div>
 				<?php
-					if(isset($errors['email'])) {echo '<span class="err">'. $errors['email']. '</span>';}
+					echo displayErrors($errors, 'email');
 
 				?>
 				<label>email:</label>
@@ -107,8 +111,7 @@
 			    
 			<div>
 				<?php
-					if(isset($errors['password'])) { echo '<span class="err">'.$errors['password']. '</span>';}
-
+					echo displayErrors($errors, 'password');
 				?>
 
 				<label>password:</label>
@@ -118,7 +121,7 @@
 			<div>
 
 				<?php
-					if(isset($errors['pword'])) { echo '<span class="err">'.$errors['pword']. '</span>';}
+					echo displayErrors($errors, 'pword');
 
 				?>
 

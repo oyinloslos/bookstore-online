@@ -1,4 +1,15 @@
 <?php
+   #load db connection
+
+   include 'includes/db.php';
+
+   #including functions
+   include 'includes/functions.php';
+
+   ?>
+
+
+<?php
 
     #title
 
@@ -7,11 +18,13 @@
    #include header
    include 'includes/header.php';
 
-
-   if(array_key_exists('register', $_POST)) {
    	#cache errors
    	$errors = [];
      
+
+
+   if(array_key_exists('register', $_POST)) {
+   
         #validate email
 
    	if(empty($_POST['email'])){
@@ -28,16 +41,16 @@
    	if(empty($errors)) {
    		//do database stuff
 
-   	}else{
-   		foreach ($errors as $err) {
-   			echo $err;
-   		}
+   		#eliminate unwanted spaces from values in the $_POST array
+   			$clean = array_map('trim', $_POST);
+
+
+   		adminLogin($conn,$clean);
+
+
    	}
 
-
    }
-   
-
 ?>
     
 
@@ -48,10 +61,13 @@
 		<hr>
 		<form id="register"  action ="login.php" method ="POST">
 			<div>
+
+				
 				<label>email:</label>
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div>
+				
 				<label>password:</label>
 				<input type="password" name="password" placeholder="password">
 			</div>

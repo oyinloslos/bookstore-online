@@ -50,4 +50,68 @@
 
 
 
-?>
+
+  function displayErrors($view, $what){
+
+  		$result = "";
+
+  		if(isset($view[$what])) { 
+
+  			$result =  '<span class="err">'.$view[$what]. '</span>';
+
+
+  	
+	     
+
+	    }
+
+	    return $result;
+
+	}
+
+
+
+
+	function adminLogin($dbconn,$input){
+
+
+
+
+			$stmt = $dbconn->prepare("SELECT * FROM admin WHERE 
+										email = '".$input['email']. "'");
+			#bind params							
+      
+
+  		$stmt->execute();
+
+
+  	   #get number of rows returned
+
+  	   $count = $stmt->rowCount();
+
+  	   if($count > 0) {
+
+	  	   	$userRecord = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	  	   	if(password_verify($input['password'], $userRecord['hash'])) {
+	  	   		
+	  	   		echo "login successful";
+	  	   	} else {
+
+	  	   		echo "*login failed";
+
+	  	   	}
+
+  	   } else {
+
+  	   	echo "Email does not exist";
+
+
+  	   }
+    }
+
+
+
+   
+   
+   ?>
