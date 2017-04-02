@@ -27,6 +27,35 @@
   	}
 
 
+    function addCategories($dbconn,$input){
+
+    #insert data
+
+
+      #One way to form an INSERT statement to look like INSERT INTO categories(category_name, date_created) VALUES ('JAVA', '2017-04-08')
+    //$stmt = $dbconn->prepare("INSERT INTO categories(category_name,date_created) VALUES ('" .$input['category']. "',NOW())");
+
+    #Another way: Using BindParam in an index fashion
+    $stmt = $dbconn->prepare("INSERT INTO categories(category_name,date_created) VALUES (?,NOW())");
+    $stmt->bindparam(1, $input['category']);
+
+    #Another way: Using BindParam in an associative fashion
+    //$stmt = $dbconn->prepare("INSERT INTO categories(category_name) VALUES (:c)");
+
+    //$stmt->bindparam(":c", $input['category']);
+   
+    $stmt->execute();
+
+    $success = "Category Successfully Added";
+    
+    header("Location:category.php?success=$success");
+      
+
+  }
+  
+
+
+
 
   function usersEmailExistence($dbconn,$email) {
   	$result = false;
@@ -115,7 +144,6 @@
    
 
    function uploadFiles($input){
-
    		#generate random number to append
 	$rnd = rand(0000000000, 9999999999);
 
