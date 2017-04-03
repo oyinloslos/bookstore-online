@@ -183,7 +183,7 @@ function viewCategories($dbconn){
             echo "<td>".$record['category_name']."</td>";
             echo "<td>".$record['date_created']."</td>";
             echo "<td><a href=\"editCategory.php?id=" .$record['category_id']. "&name=" .$record['category_name']. "\">edit</a></td>";
-            echo "<td><a href=\"deletecategory.php\">delete</a></td>";
+            echo "<td><a href=\"deleteCategory.php?id=" .$record['category_id']."\">delete</a></td>";
             echo "</tr>";
             
               # code...
@@ -207,5 +207,21 @@ function editCategory($dbconn,$post,$get){
         header("Location:category.php");
 	   
      }
+
+
+
+
+function deleteCategory($dbconn,$get){
+
+        
+         $stmt=$dbconn->prepare("DELETE FROM categories WHERE category_id=:id");
+         
+         $stmt->bindparam(":id", $get['id']);
+
+         $stmt->execute();
+
+         header("location:category.php");
+
+       }
 	   ?>
 

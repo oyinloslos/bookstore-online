@@ -104,8 +104,6 @@
 			
 			<span><a href="#">2</a></span>
 			
-			<a href="#">3</a>
-			<span>4</span>
 		</div>
 	</div>
 
