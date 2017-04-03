@@ -169,43 +169,43 @@
 
 function viewCategories($dbconn){
 
-  $view="";
 
+   
 
-           $stmt = $dbconn->prepare("SELECT * FROM categories  WHERE category_id =:id,category_name =:name,date_created =:created"); 
-           
+            $stmt = $dbconn->prepare("SELECT * FROM categories"); 
 
-          
+            $stmt->execute();
 
-               //$id= $stmt->bindparam(":id",$cat['category_id']);
+            while ($record = $stmt->fetch()) {
 
-                //$name = $stmt->bindparam(":name", $cat[1]);
-                
-                //$created = $stmt->bindparam(":created", $cat[2]);
-
-                //$stmt->execute();
+            echo "<tr>";
+            echo "<td>".$record['category_id']."</td>";
+            echo "<td>".$record['category_name']."</td>";
+            echo "<td>".$record['date_created']."</td>";
+            echo "<td><a href=\"editCategory.php?id=" .$record['category_id']. "&name=" .$record['category_name']. "\">edit</a></td>";
+            echo "<td><a href=\"deletecategory.php\">delete</a></td>";
+            echo "</tr>";
             
-
-
-            //foreach ($stmt as $cat) {
-
-              //$view.= "<tr>";
-              //$view.="<td>".$id.'</td></td>'.$name.'<td></td>'.$created.'<td></td>';
-              //$view.="</tr>";
-
-
-       //$stmt->bindparam(":e", $email);
-
-
-                
- // }
-
-           
-
-
-  
+              # code...
+            }
 
 }
+
+
+
+function editCategory($dbconn,$post,$get){
+
+
+  $stmt =$dbconn->prepare("UPDATE categories SET category_name=:name WHERE category_id=:id");
+
+        $stmt->bindparam(":name",$post['category']);
+
+        $stmt->bindparam(":id",$get['id']);
+
+        $stmt->execute();
+
+        header("Location:category.php");
 	   
+     }
 	   ?>
 

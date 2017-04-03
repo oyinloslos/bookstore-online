@@ -18,14 +18,16 @@
 	 $errors =[];
     #title
 
-   $page_title = "category";
+   $page_title = "EditCategory";
+
+   echo $_GET['name'];
 
    #include header
    include 'includes/header1.php';
 
 
 
-   if(array_key_exists('add', $_POST)) {
+   if(array_key_exists('edit', $_POST)) {
    	
    	
    	
@@ -37,7 +39,10 @@
 
 
 	   	if(empty($errors)) {
-	   		addCategories($conn,$_POST);
+
+	   	editCategory($conn,$_POST,$_GET);
+
+	   		
 	   	} else {
 	   		foreach ($errors as $error) {
 	   			echo $error;
@@ -48,6 +53,12 @@
   	}
 
 
+
+
+
+
+
+ 
 
   	
 ?>
@@ -63,49 +74,26 @@
 
 				
 
-			<table id="tab">
+			
 
 					<form class="register" method="POST">
 						<p>Edit Category</p>
 
-						<input type="text" name="category" placeholder ="enter category name">
+						<input type="text" name="category" placeholder ="enter category name"  
+						value="<?php echo $_GET['name'];?>"
+						>
 
 
-						<input type="submit" name="add" value="Click to add">
+						<input type="submit" name="edit" value="Click to edit">
 					</form>
 
-						<?php
+						
 
-						?>
-
-				<thead>
-					<tr>
-						<th>category id</th>
-						<th>category name</th>
-						<th>date created</th>
-						<th>edit</th>
-						<th>delete</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-
-					viewCategories($conn);
-
-
-					?>
-
-          		</tbody>
-			</table>
+				
 		</div>
 
 		<div class="paginated">
-			<span><a href="category.php">1</a></span>
 			
-			<span><a href="#">2</a></span>
-			
-			<a href="#">3</a>
-			<span>4</span>
 		</div>
 	</div>
 

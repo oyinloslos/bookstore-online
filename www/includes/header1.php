@@ -11,7 +11,7 @@
 			<h1>T<span>SSB</span></h1>
 			<nav>
 				<ul class="clearfix">
-					<li><a href="#" class="selected">Categories</a></li>
+					<li><a href="category.php" class="selected">Categories</a></li>
 					<li><a href="home.php">Home</a></li>
 					<li><a href="#">logout</a></li>
 
