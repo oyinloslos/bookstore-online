@@ -61,17 +61,22 @@
 	<div class="wrapper">
 		<div id="stream">
 
+				
 
 			<table id="tab">
 
 					<form class="register" method="POST">
 						<p>Add Category Name</p>
+
 						<input type="text" name="category" placeholder ="enter category name">
+
 
 						<input type="submit" name="add" value="Click to add">
 					</form>
 
+						<?php
 
+						?>
 
 				<thead>
 					<tr>
@@ -83,13 +88,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>the knowledge gap</td>
-						<td>maja</td>
-						<td>January, 10</td>
-						<td><a href="#">edit</a></td>
-						<td><a href="#">delete</a></td>
-					</tr>
+					<?php  
+
+						$stmt = $conn->prepare("SELECT * FROM categories"); 
+
+						$stmt->execute();
+
+						while ($record = $stmt->fetch()) {
+
+						echo "<tr>";
+						echo "<td>".$record['category_id']."</td>";
+						echo "<td>".$record['category_name']."</td>";
+						echo "<td>".$record['date_created']."</td>";
+						echo "<td><a href=\"editCategory.php\">edit</a></td>";
+						echo "<td><a href=\"deletecategory.php\">delete</a></td>";
+						echo "</tr>";
+						
+							# code...
+						}
+
+
+					?>
+
           		</tbody>
 			</table>
 		</div>

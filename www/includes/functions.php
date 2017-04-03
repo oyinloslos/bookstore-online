@@ -164,5 +164,48 @@
 
 
 
+
+
+
+function viewCategories($dbconn){
+
+  $view="";
+
+
+           $stmt = $dbconn->prepare("SELECT * FROM categories  WHERE category_id =:id,category_name =:name,date_created =:created"); 
+           
+
+          
+
+               //$id= $stmt->bindparam(":id",$cat['category_id']);
+
+                //$name = $stmt->bindparam(":name", $cat[1]);
+                
+                //$created = $stmt->bindparam(":created", $cat[2]);
+
+                //$stmt->execute();
+            
+
+
+            //foreach ($stmt as $cat) {
+
+              //$view.= "<tr>";
+              //$view.="<td>".$id.'</td></td>'.$name.'<td></td>'.$created.'<td></td>';
+              //$view.="</tr>";
+
+
+       //$stmt->bindparam(":e", $email);
+
+
+                
+ // }
+
+           
+
+
+  
+
+}
 	   
 	   ?>
+
