@@ -223,5 +223,85 @@ function deleteCategory($dbconn,$get){
          header("location:category.php");
 
        }
+
+
+
+function getCategory($dbconn){
+
+       $stmt=$dbconn->prepare("SELECT * FROM categories");
+       $stmt->execute();
+       $result = "";
+
+       while ($record = $stmt->fetch()){
+            $cat_id = $record['category_id'];
+            $cat_name = $record['category_name'];
+
+            $result .= "<option value='$cat_id'>$cat_name</option>";
+
+       }
+       return $result;
+
+
+
+}
+function uploadProduct($dbconn,$input,$file)
+
+      {
+
+
+
+      }
+
+      function getproducts($dbconn){
+      $stmt=$dbconn->prepare("SELECT * FROM books");
+       $stmt->execute();
+      $result = "";
+
+       while ($record = $stmt->fetch()){
+              $book_id = $record['book_id'];
+              $title = $record['title'];
+              $author = $record['author'];
+              $price = $record['price'];
+              $year= $record['year'];
+              $isbn = $record['ISBN'];
+              $path = $record['image_path'];
+          
+
+                   $result .= "<tr>";
+              $result .= "<td>".$title."</td>";
+              $result .= "<td>".$author."</td>";
+              $result .= "<td>".$price."</td>";
+                $result .= "<td>".$year."</td>";
+                    $result .= "<td>".$isbn."</td>";
+                       $result .= "<td><img src='$path' height='80px'  width='80px'/></td>";
+              $result .= "<td><a href='editProduct.php?id=$book_id'>edit</a></td>";
+                 $result .= "<td><a href='adminHome.php?action=delete&book_id=$book_id'>delete</a></td>";
+              
+              $result .= "</tr>";
+
+
+         }
+         return $result;
+
+
+
+}
+
+
+
+function deleteProduct($dbconn,$id){
+
+        
+         $stmt=$dbconn->prepare("DELETE FROM books WHERE book_id=:id");
+         
+         $stmt->bindparam(":id", $id);
+
+         $stmt->execute();
+         $success = "Product Deleted";
+
+         header("location:adminHome.php?message=$success");
+
+       }
+
 	   ?>
 

@@ -1,26 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>TEST</title>
-	<link rel="stylesheet" type="text/css" href="styles/styles.css">
-</head>
+<?php
+   #load db connection
+session_start();
+$_SESSION['active'] = true;
 
-<body>
-	<section>
-		<div class="mast">
-			<h1>T<span>SSB</span></h1><span>Home</span>
-			<nav>
-				<ul class="clearfix">
-					<li><a href="#" class="selected">add posts</a></li>
-					<li><a href="#">view posts</a></li>
-					<li><a href="#">logout</a></li>
-				</ul>
-			</nav>
-		</div>
-	</section>
+   include 'includes/db.php';
+
+   #including functions
+   include 'includes/functions.php';
+
+   #header
+
+    #include header
+   include 'includes/header.php';
+
+
+  
+   	if(isset($_GET['action']))
+
+  	{
+
+
+   	deleteProduct($conn,$_GET['book_id']);
+   }
+
+	 
+
+
+
+
+   ?>
+
+
+
 	<div class="wrapper">
 		<div id="stream">
-			<table id="tab">
+
+			<?php  if(isset($_GET['message'])) { echo $_GET['message'];} ?>
+
+			<table id ="tab">
 				<thead>
 					<tr>
 						<th>Title</th>
@@ -36,14 +53,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>the knowledge gap</td>
-						<td>maja</td>
-						<td>January, 10</td>
-						<td>January, 10</td>
-						<td>January, 10</td>
-						<td>January, 10</td>
-						<td><a href="#">edit</a></td>
-						<td><a href="#">delete</a></td>
+					<?php  $view = getProducts($conn); echo "$view"; ?>
 					</tr>
           		</tbody>
 			</table>
