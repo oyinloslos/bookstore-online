@@ -20,7 +20,7 @@
 
    $page_title = "EditCategory";
 
-   echo $_GET['name'];
+ 
 
    #include header
    include 'includes/header1.php';

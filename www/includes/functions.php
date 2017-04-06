@@ -102,65 +102,57 @@
 
 
 	function adminLogin($dbconn,$input){
+      $result = [];
 
+			$stmt = $dbconn->prepare("SELECT * FROM admin WHERE email = :e");
+  		$stmt->execute([":e" => $input['email']]);
 
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+  	  #get number of rows returned
+  	  $count = $stmt->rowCount();
 
-			$stmt = $dbconn->prepare("SELECT * FROM admin WHERE 
-										email = '".$input['email']. "'");
-			#bind params							
-      
+  	   if($count != 1 || !password_verify($input['password'], $row['hash'])) {
+          $result[] = false;
 
-  		$stmt->execute();
+          # handle error
+          redirect('login.php?msg=either username or password is incorrect');
 
-
-  	   #get number of rows returned
-
-  	   $count = $stmt->rowCount();
-
-  	   if($count > 0) {
-
-	  	   	$userRecord = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	  	   	if(password_verify($input['password'], $userRecord['hash'])) {
-	  	   		
-	  	   		echo "login successful";
-	  	   	} else {
-
-	  	   		echo "*login failed";
-
-	  	   	}
 
   	   } else {
-
-  	   	echo "Email does not exist";
-
-
+          $result[] = true;
+          $result[] = $row;
   	   }
+
+       return $result;
+
     }
 
 
 
    
 
-   function uploadFiles($input){
+   function uploadFiles($input, $name, $upDIR){
+      $result = [];
+
    		#generate random number to append
-	$rnd = rand(0000000000, 9999999999);
+    	$rnd = rand(0000000000, 9999999999);
 
-	#strip filename for spaces
+    	#strip filename for spaces
+    	$strip_name = str_replace("","_", $input[$name]['name']);
 
-	$strip_name = str_replace("","_", $_FILES['pic']['name']);
+    	$filename = $rnd.$strip_name;
+    	$destination = $upDIR.$filename;
 
-	$filename = $rnd.$strip_name;
-	$destination = 'uploads/'.$filename;
+    	if(!move_uploaded_file($input[$name]['tmp_name'], $destination)) {
+        $result[] = false;
+    	} else {
+        $result[] = true;
+        $result[] = $destination;
+      }
 
-	if(!move_uploaded_file($_FILES['pic']['tmp_name'], $destination)) {
-		
-		$input[]  = "file upload failed";
+      return $result;
 	}
-
-
-		}
 
 
 
@@ -240,17 +232,26 @@ function getCategory($dbconn){
 
        }
        return $result;
-
-
-
 }
-function uploadProduct($dbconn,$input,$file)
 
-      {
+function doEditSelectCategory($dbconn, $catName){
+       $stmt=$dbconn->prepare("SELECT * FROM categories");
+       $stmt->execute();
+       $result = "";
 
+       while ($record = $stmt->fetch()){
+            $cat_id = $record['category_id'];
+            $cat_name = $record['category_name'];
 
+            # skip...
+            if($cat_name == $catName) { continue; }
 
-      }
+            $result .= "<option value='$cat_id'>$cat_name</option>";
+
+       }
+       return $result;
+}
+
 
       function getproducts($dbconn){
       $stmt=$dbconn->prepare("SELECT * FROM books");
@@ -263,21 +264,21 @@ function uploadProduct($dbconn,$input,$file)
               $author = $record['author'];
               $price = $record['price'];
               $year= $record['year'];
-              $isbn = $record['ISBN'];
+              $isbn = $record['isbn'];
               $path = $record['image_path'];
           
 
-                   $result .= "<tr>";
-              $result .= "<td>".$title."</td>";
-              $result .= "<td>".$author."</td>";
-              $result .= "<td>".$price."</td>";
+                $result .= "<tr>";
+                $result .= "<td>".$title."</td>";
+                $result .= "<td>".$author."</td>";
+                $result .= "<td>".$price."</td>";
                 $result .= "<td>".$year."</td>";
-                    $result .= "<td>".$isbn."</td>";
-                       $result .= "<td><img src='$path' height='80px'  width='80px'/></td>";
-              $result .= "<td><a href='editProduct.php?id=$book_id'>edit</a></td>";
-                 $result .= "<td><a href='adminHome.php?action=delete&book_id=$book_id'>delete</a></td>";
-              
-              $result .= "</tr>";
+                $result .= "<td>".$isbn."</td>";
+                $result .= "<td><img src='$path' height='80px'  width='80px'/></td>";
+                $result .= "<td><a href='editProducts.php?book_id=$book_id'>edit</a></td>";
+                   $result .= "<td><a href='adminHome.php?action=delete&book_id=$book_id'>delete</a></td>";
+                
+                $result .= "</tr>";
 
 
          }
@@ -289,7 +290,7 @@ function uploadProduct($dbconn,$input,$file)
 
 
 
-function deleteProduct($dbconn,$id){
+    function deleteProduct($dbconn,$id){
 
         
          $stmt=$dbconn->prepare("DELETE FROM books WHERE book_id=:id");
@@ -303,5 +304,82 @@ function deleteProduct($dbconn,$id){
 
        }
 
-	   ?>
+
+
+function getBookByID($dbconn, $bookID) {
+
+  $stmt = $dbconn->prepare("SELECT * FROM books WHERE book_id=:bid");
+
+  $stmt->bindParam(":bid", $bookID);
+  $stmt->execute();
+
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  return $row;
+}
+
+
+function getCategoryByID($dbconn, $categoryID){
+  $stmt = $dbconn->prepare("SELECT * FROM categories WHERE category_id=:cat");
+
+  $stmt->bindParam(":cat", $categoryID);
+
+  $stmt->execute();
+
+  $category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  return $category;
+}
+
+
+
+function editProducts($dbconn,$post,$bookID){
+
+
+  $stmt =$dbconn->prepare("UPDATE books SET title=:t, author=:a, price=:p, year=:y, isbn=:isbn WHERE book_id=:id");
+
+        $stmt->bindParam(":t",$post['title']);
+        $stmt->bindParam(":a",$post['author']);
+        $stmt->bindParam(":p",$post['price']);
+        $stmt->bindParam(":y",$post['year']);
+        $stmt->bindParam(":id",$bookID);
+
+        $stmt->bindParam(":isbn",$post['isbn']);
+
+        $stmt->execute();
+
+        header("Location:adminHome.php");
+     
+     }
+
+
+function addProducts($dbconn,$post){
+
+
+
+    $stmt=$dbconn->prepare("INSERT INTO books(title,author,cat_id,price,year,isbn,image_path) VALUES(:title,:author,:cat_id,:price,:year,:IS, :image_path)");
+            
+            $stmt->bindparam(":title",$post['title']);
+            $stmt->bindparam(":author",$post['author']);
+            $stmt->bindparam(":year",$post['year']);
+            $stmt->bindparam(":IS",$post['isbn']);
+            $stmt->bindparam(":image_path",$destination);
+            $stmt->bindparam(":cat_id",$post['category']);
+            $stmt->bindparam(":price",$post['price']);
+
+            $stmt->execute();
+
+
+             $success = "Category Successfully Added";
+        
+             header("Location:adminHome.php?success=$success");
+
+}
+
+
+function redirect($loc) {
+  header("Location: ".$loc);
+}
+
+?>
 

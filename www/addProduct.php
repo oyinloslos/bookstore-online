@@ -1,5 +1,8 @@
 <?php
-   #load db connection
+
+	session_start();
+	$_SESSION['active'] = true;
+	   #load db connection
 
    include 'includes/db.php';
 
@@ -20,7 +23,7 @@
 				
 
 
-    
+     $erorrs = [];
 
 		   if (array_key_exists('add', $_POST)) {
 
@@ -30,7 +33,7 @@
 					$ext = ["image/jpg","image/jpeg", "image/png"];
 
 
-		   			 $erorrs = [];
+		   			
 
 
 				 if(empty($_POST['title'])){
@@ -78,65 +81,25 @@
 							$errors[] = "Invalid file type";
 						}
 
-							$rnd = rand(0000000000, 9999999999);
+						$chk = uploadFiles($_FILES, 'pic', 'uploads/');
 
-	#strip filename for spaces
+					 if(empty($errors)){
+						   	$clean = array_map('trim', $_POST);
 
-						$strip_name = str_replace("","_", $_FILES['pic']['name']);
+				   			addProducts($conn,$clean);
+				   			if($chk[0] ==false) {
 
-						$filename = $rnd.$strip_name;
-						$destination = 'uploads/'.$filename;
-
-						if(!move_uploaded_file($_FILES['pic']['tmp_name'], $destination)) {
-							
-							$errors[]  = "file upload failed";
-
-						}
-
-						   if(empty($errors)){
+				   				$row = $chk[1];
 
 
-				   	$stmt=$conn->prepare("INSERT INTO books(title,author,cat_id,price,year,ISBN,image_path) VALUES(:title,:author,:cat_id,:price,:year,:IS, :image_path)");
-				   	
-				   	$stmt->bindparam(":title",$_POST['title']);
-				   	$stmt->bindparam(":author",$_POST['author']);
-				   	$stmt->bindparam(":year",$_POST['year']);
-				   	$stmt->bindparam(":IS",$_POST['isbn']);
-				   	$stmt->bindparam(":image_path",$destination);
-				   	$stmt->bindparam(":cat_id",$_POST['category']);
-				   	$stmt->bindparam(":price",$_POST['price']);
+				   				redirect('adminHome.php');
+				   			}
 
-				   	$stmt->execute();
+		 		 	}
 
+			}
 
-				   	 $success = "Category Successfully Added";
-		    
-		   			 header("Location:addProduct.php?success=$success");
-
-
-		 		 } else {
-			   		foreach ($errors as $error) {
-			   			echo $error. '</br>';
-
-
-			   		}
-
-			   	 }
-
-
-
-		   }
-
-				
-
-					
-
-
-				
-
-
-
-			?>
+		?>
 
 	<div class="wrapper">
 		<h1 id="register-label">Add Products</h1>

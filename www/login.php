@@ -1,3 +1,4 @@
+
 <?php
    #load db connection
 
@@ -42,13 +43,23 @@
    		//do database stuff
 
    		#eliminate unwanted spaces from values in the $_POST array
-   			$clean = array_map('trim', $_POST);
+   		$clean = array_map('trim', $_POST);
 
+   		$chk = adminLogin($conn,$clean);
+         if($chk[0] == true) {
 
-   		adminLogin($conn,$clean);
+            $row = $chk[1];
 
+            #set user session..
+            $_SESSION['admin_id'] = $row['admin_id'];
+            $_SESSION['admin_name'] = $row['firstName'];
+
+            # redirect...
+            redirect('adminHome.php');
+         }
 
    	}
+
 
    }
 ?>
@@ -60,13 +71,25 @@
 		<h1 id="register-label">Admin Login</h1>
 		<hr>
 		<form id="register"  action ="login.php" method ="POST">
+         <?php
+            $errmsg = displayErrors($_GET, 'msg');
+            echo $errmsg;
+         ?>
 			<div>
-
+            <?php
+               $errmsg = displayErrors($errors,'email');
+               echo $errmsg;
+            ?>
 				
 				<label>email:</label>
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div>
+            <?php
+               $errmsg = displayErrors($errors,'password');
+
+               echo $errmsg;
+            ?>
 				
 				<label>password:</label>
 				<input type="password" name="password" placeholder="password">
