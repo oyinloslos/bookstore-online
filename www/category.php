@@ -1,4 +1,7 @@
 <?php
+session_start();
+$_SESSION['active'] = true;
+
    #load db connection
 
    include 'includes/db.php';
@@ -21,7 +24,7 @@
    $page_title = "category";
 
    #include header
-   include 'includes/header1.php';
+   include 'includes/header.php';
 
 
 

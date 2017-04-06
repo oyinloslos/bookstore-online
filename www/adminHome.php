@@ -42,7 +42,7 @@ $_SESSION['active'] = true;
 					<tr>
 						<th>Title</th>
 						<th>Author</th>
-						
+						<th>Category</th>
 						<th>Price</th>
 						<th>Year </th>
 						<th>ISBN</th>

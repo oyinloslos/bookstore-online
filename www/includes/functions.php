@@ -212,7 +212,7 @@ function deleteCategory($dbconn,$get){
 
          $stmt->execute();
 
-         header("location:category.php");
+         redirect('category.php');
 
        }
 
@@ -262,6 +262,7 @@ function doEditSelectCategory($dbconn, $catName){
               $book_id = $record['book_id'];
               $title = $record['title'];
               $author = $record['author'];
+              $category = getCategoryByID($dbconn, $record['cat_id']);
               $price = $record['price'];
               $year= $record['year'];
               $isbn = $record['isbn'];
@@ -271,6 +272,7 @@ function doEditSelectCategory($dbconn, $catName){
                 $result .= "<tr>";
                 $result .= "<td>".$title."</td>";
                 $result .= "<td>".$author."</td>";
+                $result .= "<td>".$category['category_name']."</td>";
                 $result .= "<td>".$price."</td>";
                 $result .= "<td>".$year."</td>";
                 $result .= "<td>".$isbn."</td>";
@@ -355,22 +357,22 @@ function editProducts($dbconn,$post,$bookID){
 
 function addProducts($dbconn,$post){
 
+   
 
-
-    $stmt=$dbconn->prepare("INSERT INTO books(title,author,cat_id,price,year,isbn,image_path) VALUES(:title,:author,:cat_id,:price,:year,:IS, :image_path)");
+    $stmt=$dbconn->prepare("INSERT INTO books(title,author,cat_id,price,year,isbn,image_path) VALUES(:title,:author,:cat_id,:price,:year,:IS,:im)");
             
-            $stmt->bindparam(":title",$post['title']);
-            $stmt->bindparam(":author",$post['author']);
-            $stmt->bindparam(":year",$post['year']);
-            $stmt->bindparam(":IS",$post['isbn']);
-            $stmt->bindparam(":image_path",$destination);
-            $stmt->bindparam(":cat_id",$post['category']);
-            $stmt->bindparam(":price",$post['price']);
+            $stmt->bindParam(":title",$post['title']);
+            $stmt->bindParam(":author",$post['author']);
+            $stmt->bindParam(":year",$post['year']);
+            $stmt->bindParam(":IS",$post['isbn']);
+            $stmt->bindParam(":im",$post['dest']);
+            $stmt->bindParam(":cat_id",$post['category']);
+            $stmt->bindParam(":price",$post['price']);
 
             $stmt->execute();
 
-
-             $success = "Category Successfully Added";
+            
+             $success = "Product Successfully Added";
         
              header("Location:adminHome.php?success=$success");
 

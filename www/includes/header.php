@@ -18,6 +18,7 @@
 					<li><a href="adminHome.php" class="selected">Home</a></li>
 					<li><a href="addProduct.php">Add Products</a></li>
 					<li><a href="category.php">Categories</a></li>
+					
 					<li><a href="logout.php">logout</a></li>
 				</ul>
 			</nav>

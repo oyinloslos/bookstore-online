@@ -15,15 +15,11 @@
    include 'includes/header.php';
 
 
-   ?>
-
-
-   <?Php
-
+  
 				
 
 
-     $erorrs = [];
+    $erorrs = [];
 
 		   if (array_key_exists('add', $_POST)) {
 
@@ -67,34 +63,35 @@
 
 					#be sure a file was selected....
 						if(empty($_FILES['pic']['name'])){
-							$errors[]= "please choose a file";
+							$errors['pic']= "please choose a file";
 						}
 
 						#check file size...
 
 						if($_FILES['pic']['size'] > MAX_FILE_SIZE) {
-							$errors[] = "file size exceeds maximum. maximum: ".MAX_FILE_SIZE;
+							$errors['pic'] = "file size exceeds maximum. maximum: ".MAX_FILE_SIZE;
 						}
 
 						#check extention....
 						if(!in_array($_FILES['pic']['type'], $ext)) {
-							$errors[] = "Invalid file type";
+							$errors['pic'] = "Invalid file type";
 						}
 
 						$chk = uploadFiles($_FILES, 'pic', 'uploads/');
 
+						if($chk[0]) {
+				   				$destination = $chk[1];
+				   		} else {
+				   			$errors['pic'] = "file upload failed";
+				   		}
+
+
+
 					 if(empty($errors)){
 						   	$clean = array_map('trim', $_POST);
+						   	$clean['dest'] = $destination;
 
 				   			addProducts($conn,$clean);
-				   			if($chk[0] ==false) {
-
-				   				$row = $chk[1];
-
-
-				   				redirect('adminHome.php');
-				   			}
-
 		 		 	}
 
 			}
@@ -107,15 +104,19 @@
 		<form id="register"  action ="addProduct.php" method ="POST" enctype="multipart/form-data">
 			<div>
 			<div>
+				
 				<label>Title</label>
 				<input type="text" name="title" placeholder="title">
 			</div>
 			<div>
+
+				 
 				
 				<label>Author</label>	
 				<input type="text" name="author" placeholder="author">
 			</div>
 			<div>
+				 
 				
 				<label>Category</label>	
 				<select name="category">
@@ -126,12 +127,14 @@
 			</div>
 			    
 			<div>
+				 
 				
 				<label>Price</label>
 				<input type="text" name="price" placeholder="price">
 			</div>
 			    
 			<div>
+				 
 				
 				<label>Year of Publication</label>
 				<input type="text" name="year" placeholder="year">
@@ -143,7 +146,7 @@
 			</div>
 			<div>
 				
-
+				 
 				<label>Upload Image</label>
 				<input type="file" name="pic">
 			
