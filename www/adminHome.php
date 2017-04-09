@@ -9,6 +9,7 @@ $_SESSION['active'] = true;
    include 'includes/functions.php';
 
    #header
+    $page_title = "Home";
 
     #include header
    include 'includes/header.php';
@@ -46,6 +47,7 @@ $_SESSION['active'] = true;
 						<th>Price</th>
 						<th>Year </th>
 						<th>ISBN</th>
+						<th>Flag</th>
 						<th>Image</th>
 						<th>edit</th>
 						<th>delete</th>
@@ -53,7 +55,8 @@ $_SESSION['active'] = true;
 				</thead>
 				<tbody>
 					<tr>
-					<?php  $view = getProducts($conn); echo "$view"; ?>
+					<?php  $view = getProducts($conn); 
+					        echo "$view"; ?>
 					</tr>
           		</tbody>
 			</table>

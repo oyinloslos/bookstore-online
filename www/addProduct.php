@@ -15,6 +15,9 @@
    include 'includes/header.php';
 
 
+    $flag = array ("top-selling", "trending");
+
+
   
 				
 
@@ -55,13 +58,19 @@
 				  	$errors['year']="Please enter the year of publication"; 
 				   }
 
-				   if(empty($_POST['isbn'])){
+				if(empty($_POST['isbn'])){
 
-				  	$errors['isbn']="Please enter the ISBN"; 
-				   }
+					$errors['isbn']="Please enter the ISBN"; 
+				}
+
+				if(empty($_POST['flag'])){
+
+					$errors['flag']="Please enter a flag"; 
+				}
+					
 
 
-					#be sure a file was selected....
+					    #be sure a file was selected....
 						if(empty($_FILES['pic']['name'])){
 							$errors['pic']= "please choose a file";
 						}
@@ -150,6 +159,20 @@
 				<label>Upload Image</label>
 				<input type="file" name="pic">
 			
+			</div>
+			<div>
+
+			    <label>Flag</label>
+			    <select name= "flag">
+
+			    <option value="">Select a flag</option>
+			    <?php foreach($flag as $flag){ ?>
+               <option value="<?php echo $flag?>"><?php echo $flag?></option>
+               <?php }?>
+
+			    </select>
+
+
 			</div>
 
 			<input type="submit" name="add" value="Add product">

@@ -9,6 +9,8 @@
    #including functions
    include 'includes/functions.php';
 
+    $page_title = "editproducts";
+
    #include header
    include 'includes/header.php';
 
@@ -44,6 +46,10 @@
 	if(empty($_POST['isbn'])){
 
    		$errors['isbn']="please enter the ISBN";
+   	}
+   	if(empty($_POST['flag'])){
+
+   		$errors['flag']="please enter the ISBN";
    	}
 
    	if(empty($errors)){
@@ -123,6 +129,22 @@
 				?>
 				<label>ISBN</label>
 				<input type="text" name="isbn" placeholder="ISBN"  	value="<?php echo $item['isbn']; ?>">
+			</div>
+
+			<div>
+				<?php
+				$errmsg = displayErrors($errors, 'flag');
+					echo $errmsg;
+				?>
+				<label>flag</label>	
+				<select name="flag">
+					<option value="<?php echo $item['flag']; ?>"><?php echo $item['flag']; ?></option>
+					<?php
+						$flagList = doEditSelectFlag($conn, $item['flag']);
+						echo $flagList;
+					?>
+				</select>
+				
 			</div>
 
 
