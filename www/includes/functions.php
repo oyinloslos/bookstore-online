@@ -27,6 +27,9 @@
   	}
 
 
+
+
+
     function addCategories($dbconn,$input){
 
     #insert data
@@ -127,6 +130,37 @@
        return $result;
 
     }
+
+    function UserLogin($dbconn,$input){
+
+      $result = [];
+      $stmt =$dbconn->prepare("SELECT * FROM users WHERE user_id = :ui");
+      $stmt->execute([":ui"=> $input['email']]);
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      $row = $stmt->rowcount();
+
+
+      if($count != 1 || !password_verify($input['password'], $row['hash'])) {
+          $result[] = false;
+
+          # handle error
+          redirect('UserLogin.php?msg=either email or password is incorrect');
+
+
+       } else {
+          $result[] = true;
+          $result[] = $row;
+       }
+
+       return $result;
+
+
+    }
+
+
+  
 
 
 
@@ -409,6 +443,63 @@ function doEditSelectByFlag($dbconn, $bookFlag){
        }
        return $result;
 }
+
+
+
+
+
+  function EmailExistenceDuringReg($dbconn,$email) {
+    $result = false;
+
+    $stmt = $dbconn->prepare("SELECT email FROM users WHERE email=:e");
+    #bind parameters
+    $stmt->bindparam(":e", $email);
+    $stmt->execute();
+
+    #get number of rows returned
+
+    $count = $stmt->rowCount();
+
+    if($count > 0){
+      $result = true;
+    }
+
+      return $result;
+
+  }
+
+
+
+
+
+
+    function dbUserRegister($dbconn,$input) {
+
+      
+
+    #hash the password
+    $hash = password_hash($input['password'], PASSWORD_BCRYPT);
+
+
+    #insert data
+    $stmt = $dbconn->prepare("INSERT INTO users(firstName, lastName, email,username, hash) VALUES(:fn, :ln, :e,:us, :h)");
+
+
+
+    #bind params
+    $data = [
+      ':fn' => $input['fname'],
+      ':ln' => $input['lname'],
+      ':e'  => $input['email'],
+      ':us'  => $input['uname'],
+      ':h'  => $hash
+    ];
+
+      $stmt->execute($data);
+
+
+
+    }
 
 
 ?>

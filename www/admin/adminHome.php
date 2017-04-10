@@ -3,16 +3,16 @@
 session_start();
 $_SESSION['active'] = true;
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
    #header
     $page_title = "Home";
 
     #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
 
   

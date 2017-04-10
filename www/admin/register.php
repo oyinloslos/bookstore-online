@@ -4,14 +4,14 @@
    $page_title = "Register";
 
    #load db connection
-   include 'includes/db.php';
+   include '../includes/db.php';
 
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
    #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
 
    #cache errors

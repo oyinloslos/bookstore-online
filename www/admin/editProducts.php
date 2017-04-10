@@ -4,15 +4,15 @@
 
    #load db connection
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
     $page_title = "editproducts";
 
    #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
    if(isset($_GET['book_id'])) {
    	# DATA ACCESS OBJECT DESIGN PATTERN....
@@ -20,6 +20,9 @@
    }
 
    $category = getCategoryByID($conn, $item['cat_id']);
+
+    $flag = array ("top-selling", "trending");
+
    $errors=[];
 
    if(array_key_exists('edit', $_POST)){
@@ -131,20 +134,21 @@
 				<input type="text" name="isbn" placeholder="ISBN"  	value="<?php echo $item['isbn']; ?>">
 			</div>
 
+			
+
 			<div>
-				<?php
-				$errmsg = displayErrors($errors, 'flag');
-					echo $errmsg;
-				?>
-				<label>flag</label>	
-				<select name="flag">
-					<option value="<?php echo $item['flag']; ?>"><?php echo $item['flag']; ?></option>
-					<?php
-						$flagList = doEditSelectFlag($conn, $item['flag']);
-						echo $flagList;
-					?>
-				</select>
-				
+
+			    <label>Flag</label>
+			    <select name= "flag">
+
+			    <option value="">Select a flag</option>
+			    <?php foreach($flag as $flag){ ?>
+               <option value="<?php echo $flag?>"><?php echo $flag?></option>
+               <?php }?>
+
+			    </select>
+
+
 			</div>
 
 
@@ -166,6 +170,6 @@
 	<?php
    #include footer
  
-   include 'includes/footer.php';
+   include '../includes/footer.php';
 
 	?>

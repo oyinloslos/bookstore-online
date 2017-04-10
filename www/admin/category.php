@@ -4,10 +4,10 @@ $_SESSION['active'] = true;
 
    #load db connection
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
    #header
 
@@ -24,7 +24,7 @@ $_SESSION['active'] = true;
    $page_title = "category";
 
    #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
 
 

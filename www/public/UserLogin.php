@@ -1,10 +1,10 @@
 <?php
    #load db connection
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
 
   #include header
@@ -22,14 +22,33 @@
         }
 
       if(empty($_POST['password'])){
-        $errors['password'] = "Please enter your password"
+        $errors['password'] = "Please enter your password";
       }
 
       if(empty($errors)){
 
-        
+        $clean = array_map('trim',$_POST);
+
+        $chk = UserLogin($conn,$clean);
+
+
+         if($chk[0] == true) {
+
+            $row = $chk[1];
+
+
+         #set user session..
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['admin_name'] = $row['firstName'];
+
+            # redirect...
+            redirect('Home.php');
+
+
       }
     }
+
+  }
 
 ?>
 
@@ -69,9 +88,9 @@
       </form>
     </div>
   </div>
-  <!-- footer starts here-->
-  <div class="footer">
-    <p class="copyright">&copy; copyright 2016</p>
-  </div>
-</body>
-</html>
+ <?php
+   #include footer
+ 
+   include 'includes/footer.php';
+
+?>

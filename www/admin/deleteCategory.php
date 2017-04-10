@@ -1,10 +1,10 @@
 <?php
    #load db connection
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
    #header
 

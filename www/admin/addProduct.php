@@ -4,15 +4,15 @@
 	$_SESSION['active'] = true;
 	   #load db connection
 
-   include 'includes/db.php';
+   include '../includes/db.php';
 
    #including functions
-   include 'includes/functions.php';
+   include '../includes/functions.php';
 
    #header
 
     #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
 
     $flag = array ("top-selling", "trending");
@@ -86,7 +86,7 @@
 							$errors['pic'] = "Invalid file type";
 						}
 
-						$chk = uploadFiles($_FILES, 'pic', 'uploads/');
+						$chk = uploadFiles($_FILES, 'pic', '../uploads/');
 
 						if($chk[0]) {
 				   				$destination = $chk[1];
@@ -192,6 +192,6 @@
 	<?php
    #include footer
  
-   include 'includes/footer.php';
+   include '../includes/footer.php';
 
 	?>
