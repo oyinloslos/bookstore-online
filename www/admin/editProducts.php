@@ -86,7 +86,7 @@
 				$errmsg = displayErrors($errors, 'author');
 					echo $errmsg;
 				?>
-				<label>Au'2thor</label>	
+				<label>Author</label>	
 				<input type="text" name="author" placeholder="author"  	value="<?php echo $item['author']; ?>" >
 				
 			</div>

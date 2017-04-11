@@ -106,10 +106,7 @@
   width: 250px;
   height: 350px;
   margin-left: 121.5px;
-  background: url('../img/big.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+ 
   float: left;
 }
 .book-display .info {
@@ -223,6 +220,7 @@
   margin: auto;
   text-align: center;
 }
+/*
 .main-book-list .book:first-of-type .book-cover {
   background: url('../img/1.jpg');
   background-size: cover;
@@ -319,6 +317,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+*/
 .categories {
   color: #e8eaeb;
 }

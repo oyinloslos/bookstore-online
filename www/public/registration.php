@@ -6,6 +6,9 @@
    #including functions
    include '../includes/functions.php';
 
+       #title
+
+   $page_title = "registration";
 
   #include header
    include 'includes/header.php';
@@ -77,8 +80,7 @@
 
 
 
-
-      <form class="search-brainfood" >
+<form class="search-brainfood">
         <input type="text" class="text-field" placeholder="Search all books">
       </form>
     </div>
@@ -91,6 +93,7 @@
       <form class="def-modal-form"  action = "registration.php" method = "POST">
    
         <div class="cancel-icon close-form"></div>
+         <?php  if(isset($_GET['success'])) { echo $_GET['success'];} ?>
    
         <label for="registration-from" class="header"><h3>User Registration</h3></label>
 

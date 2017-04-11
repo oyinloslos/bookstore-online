@@ -6,16 +6,19 @@
    #including functions
    include '../includes/functions.php';
 
+    #title
 
+   $page_title = "Login";
   #include header
    include 'includes/header.php';
 
 ?>
 <?php
     
+      $errors = [];
     if(array_key_exists('login', $_POST)){
 
-      $errors = [];
+    
 
       if (empty($_POST['email'])) {
         $errors['email']="Please enter your email address";
@@ -38,11 +41,11 @@
 
 
          #set user session..
-            $_SESSION['user_id'] = $row['user_id'];
-            $_SESSION['admin_name'] = $row['firstName'];
+            //$_SESSION['user_id'] = $row['user_id'];
+            //$_SESSION['admin_name'] = $row['firstName'];
 
             # redirect...
-            redirect('Home.php');
+            redirect('index.php');
 
 
       }
@@ -54,36 +57,40 @@
 
 
 
-
-
-
-      <form class="search-brainfood">
+<form class="search-brainfood">
         <input type="text" class="text-field" placeholder="Search all books">
       </form>
     </div>
   </div>
+
+
+     
   <!-- main content starts here -->
   <div class="main">
     
     <div class="login-form">
+
+       
       
-      <form class="def-modal-form">
+      <form class="def-modal-form" action = "UserLogin.php" method = "POST">
         
         <div class="cancel-icon close-form"></div>
         
         <label for="login-form" class="header"><h3>Login</h3></label>
+        <p class="form-error"><?php  if(isset($_GET['msg'])) { echo $_GET['msg'];} ?></p>
         
         <input type="text" name="email" class="text-field email" placeholder="Email">
         
-        <p class="form-error">invalid email</p>
+        <p class="form-error"><?php echo displayErrors($errors, 'email');?></p>
         
         <input type="password" name="password"class="text-field password" placeholder="Password">
         
         <!--clear the error and use it later just to show you how it works -->
         
-        <p class="form-error">wrong password</p>
+        <p class="form-error"><?php echo displayErrors($errors, 'password');?></p>
         
         <input type="submit" name="login" class="def-button login" value="Login">
+         <p class="login-option">Don't have an account? <a href="registration.php"> Register</p>
       
       </form>
     </div>

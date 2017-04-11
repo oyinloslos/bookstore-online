@@ -9,9 +9,11 @@
 		<div class="mast">
 			<h1>T<span>SSB</span></h1>
 	<?php 
-	If(isset($_SESSION['active']))
+	If(isset($_SESSION['active'])){
 
-	{
+	
+
+	
 ?>
 			<nav>
 				<ul class="clearfix">

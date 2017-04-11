@@ -17,7 +17,7 @@
    $page_title = "Login";
 
    #include header
-   include 'includes/header.php';
+   include '../includes/header.php';
 
    	#cache errors
    	$errors = [];
@@ -104,7 +104,7 @@
 <?php
    #include footer
  
-   include 'includes/footer.php';
+   include '../includes/footer.php';
 
 ?>
 	

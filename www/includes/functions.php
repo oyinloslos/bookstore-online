@@ -134,12 +134,13 @@
     function UserLogin($dbconn,$input){
 
       $result = [];
-      $stmt =$dbconn->prepare("SELECT * FROM users WHERE user_id = :ui");
-      $stmt->execute([":ui"=> $input['email']]);
+      $stmt =$dbconn->prepare("SELECT * FROM users WHERE email = :e");
+      $stmt->execute([":e"=> $input['email']]);
 
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      $row = $stmt->rowcount();
+       #get number of rows returned
+      $count = $stmt->rowcount();
 
 
       if($count != 1 || !password_verify($input['password'], $row['hash'])) {
@@ -498,9 +499,79 @@ function doEditSelectByFlag($dbconn, $bookFlag){
       $stmt->execute($data);
 
 
+       $success = "Registration Successfully ";
+        
+             header("Location:registration.php?success=$success");
+
+
+
 
     }
 
 
+    function bestSellingBook($dbconn){
+   
+     $stmt=$dbconn->prepare("SELECT * FROM books ORDER BY no_of_sales DESC LIMIT 1");
+    
+
+      $stmt->execute();
+
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+
+  }
+
+
+  function trending($dbconn){
+    $stmt=$dbconn->prepare("SELECT * FROM books ORDER BY no_of_views DESC LIMIT 4");
+    $stmt->execute();
+    $result = "";
+
+     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+        $result = $result . 
+
+       "<li class='book'>".
+            "<a href='bookpreview.php?book_id=".$row['book_id']."'>".
+              "<div class='book-cover' style=\"background: url('../" . $row['image_path'] . "');".
+                        "background-size: cover; background-position: center; background-repeat: no-repeat;\">".
+              "</div>".
+            "</a>".
+          "<div class='book-price'><p>$" . $row['price'] ."</p></div>".
+        "</li>";
+      }
+     return $result;
+
+  }
+
+
+  function recentlyViewed($dbconn){
+  
+
+    $stmt=$dbconn->prepare("SELECT * FROM books ORDER BY flag DESC  ");
+
+   
+    $stmt->execute();
+     $result = "";
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+      $result = $result.
+
+      "<li class='book'>".
+          "<a href='bookpreview.php?book_id=".$row['book_id']."'>".
+          "<div class='book-cover' style=\"background: url('../". $row['image_path'] ."');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;\">
+   </div></a>".
+          "<div class='book-price'><p>$". $row['price'] ."</p></div>
+        </li>";
+    }
+
+    return $result;
+  }
 ?>
 
